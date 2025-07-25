@@ -1,0 +1,29 @@
+{
+  "name": "sfmce-eventnotification",
+  "version": "1.0.0",
+  "description": "A Node.js application for Heroku with in-memory database and Bearer Token authentication.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "heroku": {
+    "scripts": {
+      "postinstall": "npm install"
+    }
+  }
+}

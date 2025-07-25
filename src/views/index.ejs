@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles.css">
+    <title>Node Heroku App</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Salesforce Marketing Cloud Event Notification Service - Example</h1>
+    </header>
+    <main>
+        <h2>Data from In-Memory</h2>
+        <ul>
+            <% if (data != null && data && data.length) { %>
+                <% data.forEach(item => { %>
+                    <li><%= item.itemID %>: <%= item.description %></li>
+                <% }); %>
+            <% } else { %>
+                <li>No data available.</li>
+            <% } %>
+        </ul>
+    </main>
+    <footer>
+        <p>&copy; 2023 Node Heroku App</p>
+    </footer>
+</body>
+</html>
