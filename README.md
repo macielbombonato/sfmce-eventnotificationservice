@@ -15,7 +15,6 @@ node-heroku-app
 ├── src
 │   ├── api
 │   │   ├── index.js        # Ponto de entrada da API
-│   │   └── auth.js         # Funções de autenticação
 │   ├── db
 │   │   └── memory.js       # Banco de dados in-memory
 │   ├── views

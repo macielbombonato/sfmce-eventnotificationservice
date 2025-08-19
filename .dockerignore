@@ -31,3 +31,6 @@ build
 # Ignore OS generated files
 .DS_Store
 Thumbs.db
+
+# App test folder
+MCE
