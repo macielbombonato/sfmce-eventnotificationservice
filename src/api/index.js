@@ -15,18 +15,10 @@ const mceENSCall = (req, res) => {
   var json = req.body;
 
   var categoryType;
-  var verificationKey;
 
   if (json.length > 0) {
     categoryType = json[0].eventCategoryType || "No categoryType provided";
   }
-
-  if (json.verificationKey) {
-    verificationKey = json.verificationKey;
-  }
-
-  // Enable this for debugging purposes
-  // console.log("Processing ENS call with message: ```" + JSON.stringify(json) + "```");
 
   if (!json) {
     return res.status(400).send('JSON body is empty.');
@@ -68,14 +60,6 @@ const mceENSCall = (req, res) => {
         res, 
         "*MCE ENS - Automation Completed*",
          "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
-      );
-
-    } else if (verificationKey) {
-
-      res = sendSlackMessage(
-        res, 
-        "*MCE ENS - Verification*",
-        "*Key*: `" + verificationKey + "`"
       );
 
     } else {
@@ -122,10 +106,29 @@ function sendSlackMessage(res, messageType, message) {
   return res;
 }
 
-// Route to add a new item to the in-memory database
-app.post('/ens', (req, res) => {
+// Route to monitoring calls from MCE ENS related to automations
+// To monitoring other types, you can create additional routes and change 
+// the json reading logic accordingly
+app.post('/automation', (req, res) => {
   try {
-    mceENSCall(req, res);
+    var json = req.body;
+
+    // Enable this for debugging purposes
+    // console.log("Processing ENS call with message: ```" + JSON.stringify(json) + "```");
+
+    if (json.verificationKey) {
+      res = sendSlackMessage(
+        res, 
+        "*MCE ENS - Verification*",
+        "*Key*: `" + json.verificationKey + "`"
+      );
+
+    } else {
+      
+      mceENSCall(req, res);
+
+    }
+    
   } catch (e) {
     console.error("Error processing ENS request:", e);
     res.status(500).send('Erro interno do servidor');
