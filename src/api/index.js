@@ -43,7 +43,7 @@ const mceENSCall = (req, res) => {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Automation Started*",
-        json[0].automationName + ": " + json[0].eventCategoryType
+         "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
       );
 
     } else if (categoryType == "SendEvents.AutomationInstanceStopped") {
@@ -51,7 +51,7 @@ const mceENSCall = (req, res) => {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Automation Stopped*",
-        json[0].automationName + ": " + json[0].eventCategoryType
+         "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
       );
 
     } else if (categoryType == "SendEvents.AutomationInstanceSkipped") {
@@ -59,7 +59,7 @@ const mceENSCall = (req, res) => {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Automation Skipped*",
-        json[0].automationName + ": " + json[0].eventCategoryType
+         "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
       );
 
     } else if (categoryType == "SendEvents.AutomationInstanceCompleted") {
@@ -67,7 +67,7 @@ const mceENSCall = (req, res) => {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Automation Completed*",
-        json[0].automationName + ": " + json[0].eventCategoryType
+         "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
       );
 
     } else if (verificationKey) {
