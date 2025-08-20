@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
-const memoryDB = require('../db/memory');
-
 const app = express();
 app.use(bodyParser.json());
 
@@ -56,11 +54,25 @@ const authenticateJWT = (req, res, next) => {
 };
 
 const mceENSCall = (req, res) => {
-  const { verificationKey, json } = req.body;
+  
+  var json = req.body;
 
-  const messageKey = json[0].messageKey || "No messageKey provided";
+  console.log("Received verificationKey:", json);
 
-  if (!verificationKey || !json) {
+  var messageKey;
+  var verificationKey;
+  
+
+  if (json.length > 0) {
+    // Se json for um array, pegar o primeiro elemento
+    messageKey = json[0].messageKey || "No messageKey provided";
+  }
+
+  if (json.verificationKey) {
+    verificationKey = json.verificationKey;
+  }
+
+  if (!verificationKey && !json) {
     return res.status(400).send('Chave de verificação ou JSON não fornecido');
   } else {
     if (messageKey == "SendEvents.AutomationInstanceErrored") {
@@ -108,7 +120,7 @@ const mceENSCall = (req, res) => {
 
       sendSlackMessage(
         "Other: ",
-        Stringify(json)
+        json
       );
 
     }
@@ -128,7 +140,7 @@ function sendSlackMessage(messageType, message) {
     var apiCall = HTTP.Post(
       SLACK_WEBHOOK_URL,
       "application/json",
-      Stringify({
+      JSON.stringify({
         "channel": "martech_sync_status",
         "text": messageType + ": " + message
       })
@@ -137,27 +149,14 @@ function sendSlackMessage(messageType, message) {
     var result = Platform.Function.ParseJSON(apiCall.Response[0]);
 
     if (result.StatusCode < 200 || result.StatusCode > 299) {
-      Write("<br>Error creating alarm: " + Stringify(result));
-    } else {
-      Write("<br>Slack message sent successfully.");
-    }
+      return JSON.stringify(result);
+    } 
+
+    return result.StatusCode;
   } catch (e) {
-    Write("<br>Error sending Slack message: " + Stringify(e));
+    console.log("Error sending Slack message: " + JSON.stringify(e));
   }
 }
-
-// Route to get all items from the in-memory database
-app.get('/items', authenticateJWT, (req, res) => {
-  const items = memoryDB.getAllItems();
-  res.json(items);
-});
-
-// Route to add a new item to the in-memory database
-app.post('/items', authenticateJWT, (req, res) => {
-  const newItem = req.body;
-  memoryDB.addItem(newItem);
-  res.status(201).json(newItem);
-});
 
 // Route to add a new item to the in-memory database
 app.post('/ens', (req, res) => {
