@@ -14,28 +14,31 @@ const mceENSCall = (req, res) => {
   
   var json = req.body;
 
-  var messageKey;
+  var categoryType;
   var verificationKey;
 
   if (json.length > 0) {
-    messageKey = json[0].messageKey || "No messageKey provided";
+    categoryType = json[0].eventCategoryType || "No categoryType provided";
   }
 
   if (json.verificationKey) {
     verificationKey = json.verificationKey;
   }
 
+  // Enable this for debugging purposes
+  // console.log("Processing ENS call with message: ```" + JSON.stringify(json) + "```");
+
   if (!json) {
     return res.status(400).send('JSON body is empty.');
   } else {
-    if (messageKey == "SendEvents.AutomationInstanceErrored") {
+    if (categoryType == "SendEvents.AutomationInstanceErrored") {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Automation Errored*",
-        json[0].automationName + ": " + json[0].eventCategoryType
+        "```" + json[0].automationName + ": " + json[0].eventCategoryType + "```"
       );
 
-    } else if (messageKey == "SendEvents.AutomationInstanceStarted") {
+    } else if (categoryType == "SendEvents.AutomationInstanceStarted") {
 
       res = sendSlackMessage(
         res, 
@@ -43,7 +46,7 @@ const mceENSCall = (req, res) => {
         json[0].automationName + ": " + json[0].eventCategoryType
       );
 
-    } else if (messageKey == "SendEvents.AutomationInstanceStopped") {
+    } else if (categoryType == "SendEvents.AutomationInstanceStopped") {
 
       res = sendSlackMessage(
         res, 
@@ -51,7 +54,7 @@ const mceENSCall = (req, res) => {
         json[0].automationName + ": " + json[0].eventCategoryType
       );
 
-    } else if (messageKey == "SendEvents.AutomationInstanceSkipped") {
+    } else if (categoryType == "SendEvents.AutomationInstanceSkipped") {
 
       res = sendSlackMessage(
         res, 
@@ -59,7 +62,7 @@ const mceENSCall = (req, res) => {
         json[0].automationName + ": " + json[0].eventCategoryType
       );
 
-    } else if (messageKey == "SendEvents.AutomationInstanceCompleted") {
+    } else if (categoryType == "SendEvents.AutomationInstanceCompleted") {
 
       res = sendSlackMessage(
         res, 
@@ -80,7 +83,7 @@ const mceENSCall = (req, res) => {
       res = sendSlackMessage(
         res, 
         "*MCE ENS - Other*: ",
-        "```" + json + "```"
+        "```" + JSON.stringify(json) + "```"
       );
 
     }
