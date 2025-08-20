@@ -123,6 +123,8 @@ app.post('/automation', (req, res) => {
         "*Key*: `" + json.verificationKey + "`"
       );
 
+      res.status(200).send('Successfully verified ENS call.');
+
     } else {
       
       mceENSCall(req, res);
