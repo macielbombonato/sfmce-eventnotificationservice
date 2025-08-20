@@ -10,9 +10,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - DB_TYPE=in-memory
-      - ADMIN_USERNAME=${ADMIN_USERNAME}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - SLACK_CHANNEL=${SLACK_CHANNEL}
     volumes:
       - .:/usr/src/app
